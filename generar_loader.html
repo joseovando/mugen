@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efecto cargando con jQuery Ajax Demo</title>
+    <meta name="description" content="Efecto cargando con jQuery Ajax Demo" />
+    <meta name="author" content="Jose Aguilar">
+    <link rel="shortcut icon" href="https://www.jose-aguilar.com/blog/wp-content/themes/jaconsulting/favicon.ico" />
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="style.css" rel="stylesheet" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.button').on('click', function () {
+                //Añadimos la imagen de carga en el contenedor
+                $('#content').html(
+                    '<div class="loading"><img src="gif/1 (' + Math.floor((Math.random() * 43) +
+                        1) + ').gif" width="700"/></div>'
+                );
+
+                $.ajax({
+                    type: "POST",
+                    /* url: "ajax.php", */
+                    url: "generar.php",
+                    success: function (data) {
+                        //Cargamos finalmente el contenido deseado
+                        $('#content').fadeIn(1000).html(data);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Generar Select</h1>
+        <h2 class="lead d-none"></h2>
+
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                Contenido inicial...
+            </div>
+        </div>
+
+        <div id="timer">
+            <div class="container">
+                <div id="hour">00</div>
+                <div class="divider">:</div>
+                <div id="minute">00</div>
+                <div class="divider">:</div>
+                <div id="second">00</div>
+            </div>
+            <!-- <button id="btn-comenzar">Comenzar</button> -->
+            <br>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <a href="#" class="btn btn-secondary button" id="btn-comenzar">
+                    <i class="fa fa-play fa-5x fa-fw"></i>
+                    <h1>COMENZAR</h1>
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- Bloque de anuncios adaptable -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6676636635558550"
+                    data-ad-slot="8523024962" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        var tiempo = {
+            hora: 0,
+            minuto: 0,
+            segundo: 0
+        };
+
+        var tiempo_corriendo = null;
+
+        $("#btn-comenzar").click(function () {
+            if ($(this).text() == 'Comenzar') {
+                $(this).text('Detener');
+                tiempo_corriendo = setInterval(function () {
+                    // Segundos
+                    tiempo.segundo++;
+                    if (tiempo.segundo >= 60) {
+                        tiempo.segundo = 0;
+                        tiempo.minuto++;
+                    }
+
+                    // Minutos
+                    if (tiempo.minuto >= 60) {
+                        tiempo.minuto = 0;
+                        tiempo.hora++;
+                    }
+
+                    $("#hour").text(tiempo.hora < 10 ? '0' + tiempo.hora : tiempo.hora);
+                    $("#minute").text(tiempo.minuto < 10 ? '0' + tiempo.minuto : tiempo.minuto);
+                    $("#second").text(tiempo.segundo < 10 ? '0' + tiempo.segundo : tiempo
+                        .segundo);
+                }, 1000);
+            } else {
+                $(this).text('Comenzar');
+                clearInterval(tiempo_corriendo);
+            }
+        })
+    })
+</script>
+
+
+</html>
